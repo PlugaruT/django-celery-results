@@ -6,6 +6,7 @@ from celery.backends.base import BaseDictBackend
 
 from ..models import TaskResult
 
+from json import dumps
 
 class DatabaseBackend(BaseDictBackend):
     """The Django database backend, using models to store task state."""
@@ -22,11 +23,21 @@ class DatabaseBackend(BaseDictBackend):
             'children': self.current_task_children(request),
         })
 
+        task_name = 'unknown'
+        task_args = ''
+        if request is not None and hasattr(request, 'task'):
+            task_name = request.task
+
+        if request is not None and hasattr(request, 'args'):
+            task_args = dumps(request.args)
+
         self.TaskModel._default_manager.store_result(
             content_type, content_encoding,
             task_id, result, status,
             traceback=traceback,
             meta=meta,
+            task_name=task_name,
+            task_args=task_args
         )
         return result
 

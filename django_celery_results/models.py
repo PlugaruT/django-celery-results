@@ -37,6 +37,8 @@ class TaskResult(models.Model):
     traceback = models.TextField(_('traceback'), blank=True, null=True)
     hidden = models.BooleanField(editable=False, default=False, db_index=True)
     meta = models.TextField(null=True, default=None, editable=False)
+    task_name = models.CharField(null=True, editable=False, max_length=256, db_index=True)
+    task_args = models.TextField(null=True, editable=False)
 
     objects = managers.TaskResultManager()
 
