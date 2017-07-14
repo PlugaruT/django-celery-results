@@ -51,8 +51,10 @@ class TaskResult(models.Model):
     def as_dict(self):
         return {
             'task_id': self.task_id,
+            'name': self.task_name,
             'status': self.status,
             'result': self.result,
+            'args': self.task_args,
             'date_done': self.date_done,
             'traceback': self.traceback,
             'meta': self.meta,
